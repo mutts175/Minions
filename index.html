@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minion Birthday Countdown 🍌</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:"Poppins", sans-serif;
+background: linear-gradient(180deg,#ffe45c,#ffd400);
+height:100vh;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+color:#333;
+}
+
+/* CARD */
+
+.card{
+background:white;
+padding:40px;
+border-radius:30px;
+text-align:center;
+box-shadow:0 30px 70px rgba(0,0,0,.25);
+max-width:640px;
+width:92%;
+position:relative;
+}
+
+/* REAL MINIONS */
+
+.minionsReal{
+width:260px;
+animation:minionBounce 2.5s infinite;
+}
+
+@keyframes minionBounce{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+}
+
+/* REAL AGNES */
+
+.agnesReal{
+position:absolute;
+right:-30px;
+bottom:-10px;
+width:140px;
+animation:agnesFloat 3s infinite;
+}
+
+@keyframes agnesFloat{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-8px)}
+}
+
+/* COUNTDOWN */
+
+#countdown{
+font-size:2rem;
+margin:15px 0;
+font-weight:600;
+}
+
+/* DAILY */
+
+.daily{
+font-size:1.1rem;
+color:#1565c0;
+margin-top:6px;
+}
+
+/* CHAOS */
+
+.chaos{
+position:absolute;
+font-size:26px;
+font-weight:700;
+color:#0057ff;
+animation:pop 1.2s forwards;
+}
+
+@keyframes pop{
+from{transform:scale(.3);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+
+button{
+margin-top:18px;
+padding:12px 24px;
+border:none;
+border-radius:999px;
+background:#1565c0;
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+/* FINAL */
+
+.final{
+display:none;
+font-size:2.8rem;
+margin-top:20px;
+}
+
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_9c0f3bb6d4.mp3">
+</audio>
+
+<div class="card">
+
+<img src="minions.png" class="minionsReal">
+
+<img src="agnes.png" class="agnesReal">
+
+<h1>Birthday Countdown 🍌</h1>
+
+<div id="countdown"></div>
+
+<div class="daily" id="daily"></div>
+
+<button onclick="chaos()">Tap for Minion Chaos</button>
+
+<div class="final" id="final">🎉 MINION BIRTHDAY MODE 🎉</div>
+
+</div>
+
+<script>
+
+/* MUSIC */
+
+const music=document.getElementById("music")
+document.body.addEventListener("click",()=>music.play(),{once:true})
+
+/* DAILY MESSAGES */
+
+const messages=[
+"Minions preparing banana cake 🍌",
+"Agnes approved today's cuteness",
+"Gru scheduled party protocol",
+"Kevin inflating balloons",
+"Bob ate cake sample",
+"Banana stock rising",
+"Minion dance rehearsal ongoing",
+"Party chaos inevitable",
+"Birthday happiness loading",
+"Minion excitement increasing"
+]
+
+document.getElementById("daily").innerText=
+messages[Math.floor(Math.random()*messages.length)]
+
+/* CHAOS TEXT */
+
+const words=[
+"BELLO!!",
+"BANANAAAA!!",
+"POOPAYE!!",
+"TATATA!!",
+"BEE DO BEE DO!!",
+"TULALILOO!!",
+"HAHAHAHA!!",
+"YAYYYYY!!"
+]
+
+function chaos(){
+confetti({particleCount:120,spread:100})
+
+let t=document.createElement("div")
+t.className="chaos"
+t.innerText=words[Math.floor(Math.random()*words.length)]
+t.style.left=Math.random()*80+"vw"
+t.style.top=Math.random()*70+"vh"
+document.body.appendChild(t)
+
+setTimeout(()=>t.remove(),1200)
+}
+
+/* COUNTDOWN */
+
+const target=new Date("April 4, 2026 00:00:00").getTime()
+
+setInterval(()=>{
+let now=new Date().getTime()
+let diff=target-now
+
+if(diff<=0){
+
+document.getElementById("countdown").style.display="none"
+document.getElementById("final").style.display="block"
+
+confetti({particleCount:600,spread:200})
+confetti({particleCount:600,spread:200})
+
+return
+}
+
+let d=Math.floor(diff/86400000)
+let h=Math.floor(diff%86400000/3600000)
+let m=Math.floor(diff%3600000/60000)
+let s=Math.floor(diff%60000/1000)
+
+document.getElementById("countdown").innerHTML=
+`${d}d ${h}h ${m}m ${s}s`
+
+},1000)
+
+</script>
+
+</body>
+</html>
